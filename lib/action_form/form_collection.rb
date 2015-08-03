@@ -63,11 +63,13 @@ module ActionForm
     end
 
     def assign_to_or_mark_for_destruction(form, attributes)
-      form.submit(attributes.except(*UNASSIGNABLE_KEYS))
+      unless has_destroy_flag?(attributes) && form.nil?
+        form.submit(attributes.except(*UNASSIGNABLE_KEYS))
 
-      if has_destroy_flag?(attributes)
-        form.delete
-        remove_form(form)
+        if has_destroy_flag?(attributes)
+          form.delete
+          remove_form(form)
+        end
       end
     end
 

@@ -81,7 +81,9 @@ module ActionForm
       reflection = association_reflection
 
       if reflection.macro == :belongs_to
-        @model = parent.send("build_#{association_name}") unless call_reject_if(params_for_current_scope(params))
+        unless call_reject_if(params_for_current_scope(params))
+          @model = parent.send(association_name).presence || parent.send("build_#{association_name}")
+        end
       end
 
       super

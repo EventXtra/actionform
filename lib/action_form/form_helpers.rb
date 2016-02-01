@@ -4,7 +4,7 @@ module ActionForm
 
     def submit(params)
       params.each do |key, value|
-        if nested_params?(value)
+        if nested_params?(value) && key =~ ATTRIBUTES_KEY_REGEXP
           fill_association_with_attributes(key, value)
         else
           send("#{key}=", value)
